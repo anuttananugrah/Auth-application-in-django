@@ -1,0 +1,77 @@
+AuthApp
+-----------
+
+-registration[first name,last name,emagil,phone,username,password]
+    email/phone OTP verification
+-custom autheentication
+
+django-contrib-auth-models.py-User
+
+->AbstractUser->User
+class customUser(AbstractUser):
+    phone=models.Char 
+    is_verified=models.Boolean 
+    otp=models.Integer
+
+
+define in segttings auth user
+
+in segttings
+------------------
+
+
+WSGI_APPLICATION = 'AuthApplication.wsgi.application'
+
+AUTH_USER_MODEL="account.User"    -> add this line there
+
+
+# Database
+# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+for otp creations 
+--------------------
+
+in models import 
+    from random import randint
+
+
+for emailotp sending update setting ALLOUD HOST[]
+---------------------------------
+
+
+ALLOWED_HOSTS = []
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' # Replace with your SMTP host
+EMAIL_PORT = 587 # Use 587 for TLS, or 465 for SSL
+EMAIL_HOST_USER = 'your_email@gmail.com'
+# Store your password securely using environment variables
+EMAIL_HOST_PASSWORD = 'your_app_password' 
+EMAIL_USE_TLS = True # Use True for port 587
+EMAIL_USE_SSL = False # Use False for port 587
+
+
+django signals
+-----------------
+
+Django signals are a built-in "signal dispatcher" that allows decoupled applications to get 
+notified when specific actions occur elsewhere in the framework. They follow a publish-subscribe 
+pattern where senders notify a set of receivers (handlers) that an event has taken place. 
+
+    Core Concepts
+        Sender: The object or action that triggers the signal (e.g., a model being saved).
+        Receiver: A Python function or method that is "connected" to the signal and executes when the signal is sent.
+        Dispatcher: The internal Django mechanism that manages the registration and notification of these events. 
+    Common Built-in Signals
+        Django provides various built-in signals for key framework events: 
+        Model Signals: pre_save and post_save (before/after a model instance is saved), pre_delete and post_delete 
+        (before/after deletion), and m2m_changed (when a ManyToManyField changes).
+        Request/Response Signals: request_started and request_finished (sent when Django starts or finishes an HTTP request).
+        Auth Signals: user_logged_in and user_logged_out (triggered when a user authenticates or logs out). 
